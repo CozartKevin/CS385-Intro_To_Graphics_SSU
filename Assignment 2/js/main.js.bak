@@ -4,7 +4,15 @@ function init()
 {
 	var canvas = document.getElementById("webgl-canvas");
 	gl = canvas.getContext("webgl2");
-	gl.clearColor(1.0,0.0,1.0, 0.75);
+	gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+	
+	gl.viewport(
+   0,   // left
+   10,   // bottom
+   gl.canvas.width,   // width
+   gl.canvas.height,   // height
+);
+	gl.clearColor(1.0,0.0,1.0, 1.0);
 	cone = new Cone(gl, 20);
 	render();
 

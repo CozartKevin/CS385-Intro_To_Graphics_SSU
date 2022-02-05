@@ -9,7 +9,7 @@
 		
         void main()
         {
-            gl_PointSize = 5.0;
+            gl_PointSize = 3.0;
             gl_Position = aPosition;
 
         }
