@@ -1,6 +1,6 @@
-const DefaultNumSides = 6;
 
-function Cube( gl, numSides, vertexShaderId, fragmentShaderId ) {
+
+function Cube( gl, vertexShaderId, fragmentShaderId ) {
 
     // Initialize the shader pipeline for this object using either shader ids
     //   declared in the application's HTML header, or use the default names.
@@ -25,8 +25,6 @@ function Cube( gl, numSides, vertexShaderId, fragmentShaderId ) {
     this.P = mat4();
     this.MV = mat4();
 
-    var n = numSides || DefaultNumSides; // Number of sides 
-    
     this.count = 8;
 
     //List of verticies that make up the 8 points of the cube
@@ -35,7 +33,7 @@ function Cube( gl, numSides, vertexShaderId, fragmentShaderId ) {
         values : new Float32Array([
        -1.0,  1.0,  1.0,   //vertex 0 | Front-Top-Left
         1.0,  1.0,  1.0,   //vertex 1 | Front-Top-Right
-        1.0, -1.0,  1.0,   //vertex 2 | Front-Bottom-Left
+       -1.0, -1.0,  1.0,   //vertex 2 | Front-Bottom-Left
         1.0, -1.0,  1.0,   //vertex 3 | Front-Bottom-Right
        -1.0,  1.0, -1.0,   //vertex 4 | Back-Top-Left
         1.0,  1.0, -1.0,   //vertex 5 | Back-Top-Right
@@ -56,7 +54,7 @@ function Cube( gl, numSides, vertexShaderId, fragmentShaderId ) {
     };
 
     this.cVLA = { numComponents : 3 };
-    this.tSDOA = { count : tSDOA.length };
+    this.tSDOA = { count : tSDOA.values.length };
     
  
     const faceColors = [
@@ -83,16 +81,17 @@ function Cube( gl, numSides, vertexShaderId, fragmentShaderId ) {
       gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
       gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
 
+      
 
 
 
     this.cVLA.buffer = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, this.cVLA.buffer);
-    gl.bufferData( gl.ARRAY_BUFFER, new Float32Array(cVLA), gl.STATIC_DRAW );
+    gl.bufferData( gl.ARRAY_BUFFER, cVLA.values, gl.STATIC_DRAW );
 
     this.tSDOA.buffer = gl.createBuffer();
     gl.bindBuffer( gl.ELEMENT_ARRAY_BUFFER, this.tSDOA.buffer );
-    gl.bufferData( gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(tSDOA), gl.STATIC_DRAW );
+    gl.bufferData( gl.ELEMENT_ARRAY_BUFFER, tSDOA.values, gl.STATIC_DRAW );
 
     this.cVLA.attributeLoc = gl.getAttribLocation( this.program, "aPosition" );
     gl.enableVertexAttribArray( this.cVLA.attributeLoc );
@@ -101,8 +100,8 @@ function Cube( gl, numSides, vertexShaderId, fragmentShaderId ) {
     this.render = function () {
         gl.useProgram( this.program );
       
-       // gl.uniformMatrix4fv(this.uniforms.MV, false, flatten(this.MV));
-        //gl.uniformMatrix4fv(this.uniforms.P, false, flatten(this.P));
+       gl.uniformMatrix4fv(this.uniforms.MV, false, flatten(this.MV));
+        gl.uniformMatrix4fv(this.uniforms.P, false, flatten(this.P));
 
 
         gl.bindBuffer( gl.ARRAY_BUFFER, this.cVLA.buffer );
@@ -111,9 +110,12 @@ function Cube( gl, numSides, vertexShaderId, fragmentShaderId ) {
         gl.bindBuffer( gl.ELEMENT_ARRAY_BUFFER, this.tSDOA.buffer );
 
         // Draw the Cube
-        gl.drawElements(gl.TRIANGLE_STRIP, this.tSDOA.count, gl.UNSIGNED_SHORT, 0);
+      gl.drawElements(gl.TRIANGLE_STRIP, this.tSDOA.count, gl.UNSIGNED_SHORT, 0);
+      // Known Good Vert Test gl.drawElements(gl.Line_Strip, this.tSDOA.count, gl.UNSIGNED_SHORT, 0);
+    
     }
    
+
 
 
 

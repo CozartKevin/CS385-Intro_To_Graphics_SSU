@@ -18,7 +18,8 @@
         {
             vColor = aColor;
             gl_PointSize = 3.0;
-            gl_Position = aPosition;
+            gl_Position = P * MV * aPosition;
+        
 
         }
     </script>
