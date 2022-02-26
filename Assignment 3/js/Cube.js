@@ -55,9 +55,12 @@ function Cube( gl, vertexShaderId, fragmentShaderId ) {
 
     this.cVLA = { numComponents : 3 };
     this.tSDOA = { count : tSDOA.values.length };
+    this.colorBuffer = { numComponents : 4};
+
     
  
     const faceColors = [
+       
         [1.0,  1.0,  1.0,  1.0],    // Front face: white
         [1.0,  0.0,  0.0,  1.0],    // Back face: red
         [0.0,  1.0,  0.0,  1.0],    // Top face: green
@@ -77,13 +80,14 @@ function Cube( gl, vertexShaderId, fragmentShaderId ) {
         colors = colors.concat(c, c, c, c);
       }
     
-      const colorBuffer = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+      this.colorBuffer.buffer = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.colorBuffer.buffer);
       gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
 
+      this.colorBuffer.attributeLoc = gl.getAttribLocation( this.program, "aColor" );
+      gl.enableVertexAttribArray( this.colorBuffer.attributeLoc);
       
-
-
+     
 
     this.cVLA.buffer = gl.createBuffer();
     gl.bindBuffer( gl.ARRAY_BUFFER, this.cVLA.buffer);
@@ -100,19 +104,24 @@ function Cube( gl, vertexShaderId, fragmentShaderId ) {
     this.render = function () {
         gl.useProgram( this.program );
       
-       gl.uniformMatrix4fv(this.uniforms.MV, false, flatten(this.MV));
+        gl.uniformMatrix4fv(this.uniforms.MV, false, flatten(this.MV));
         gl.uniformMatrix4fv(this.uniforms.P, false, flatten(this.P));
 
 
         gl.bindBuffer( gl.ARRAY_BUFFER, this.cVLA.buffer );
         gl.vertexAttribPointer( this.cVLA.attributeLoc, this.cVLA.numComponents, gl.FLOAT, gl.FALSE,  0, 0 );
- 
-        gl.bindBuffer( gl.ELEMENT_ARRAY_BUFFER, this.tSDOA.buffer );
+        
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.colorBuffer.buffer);
+        gl.vertexAttribPointer( this.colorBuffer.attributeLoc, this.colorBuffer.numComponents, gl.FLOAT, gl.FALSE,  0, 0 );
 
+        gl.bindBuffer( gl.ELEMENT_ARRAY_BUFFER, this.tSDOA.buffer );
+        
         // Draw the Cube
       gl.drawElements(gl.TRIANGLE_STRIP, this.tSDOA.count, gl.UNSIGNED_SHORT, 0);
-      // Known Good Vert Test gl.drawElements(gl.Line_Strip, this.tSDOA.count, gl.UNSIGNED_SHORT, 0);
+      
     
+      // gl.drawElements(gl.LINE_STRIP, this.tSDOA.count, gl.UNSIGNED_SHORT, 0);
+      // gl.drawElements(gl.Lines, this.tSDOA.count, gl.UNSIGNED_SHORT, 0);
     }
    
 
