@@ -13,12 +13,15 @@
         uniform float t; 
         uniform mat4 MV;
         uniform mat4 P; 
+        uniform mat4 T;
+        uniform mat4 S;
+        uniform mat4 L;
 
         void main()
         {
             vColor = aColor;
             gl_PointSize = 3.0;
-            gl_Position = P * MV * aPosition;
+            gl_Position = P * MV *aPosition;
         
 
         }
@@ -34,7 +37,7 @@
 
           
             fColor = vColor; 
-            //fColor = vec4(1.0, 0.0, 1.0, 1.0);
+           //fColor = vec4(1.0, 0.0, 1.0, 1.0);
            // vec4 frontColor = vec4(1.0, 0.0, 1.0, 1.0);
             //vec4 backColor = vec4(1.0, 1.0, 1.0, 1.0);
            // fColor = gl_FrontFacing ? frontColor : backColor;

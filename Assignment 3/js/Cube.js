@@ -19,11 +19,17 @@ function Cube( gl, vertexShaderId, fragmentShaderId ) {
    
     this.uniforms = {
             MV : gl.getUniformLocation(this.program, "MV"),
-            P : gl.getUniformLocation(this.program, "P")
+            P : gl.getUniformLocation(this.program, "P"),
+            T: gl.getUniformLocation(this.program, "T"),
+            S: gl.getUniformLocation(this.program, "S"),
+            L: gl.getUniformLocation(this.program, "L")
         };
 
     this.P = mat4();
     this.MV = mat4();
+    this.T = mat4();
+    this.S = mat4();
+    this.L = mat4();
 
     this.count = 8;
 
@@ -43,6 +49,12 @@ function Cube( gl, vertexShaderId, fragmentShaderId ) {
     };
 
 
+
+
+
+
+
+
     
     //Triangle Strip Draw Order Array
     //Order of Vector elements based on Figure 2: Triangulating a cube for one sequential strip.
@@ -55,34 +67,46 @@ function Cube( gl, vertexShaderId, fragmentShaderId ) {
 
     this.cVLA = { numComponents : 3 };
     this.tSDOA = { count : tSDOA.values.length };
-    this.colorBuffer = { numComponents : 4};
+    this.colorBuffer = { numComponents : 3};
 
     
  
-    const faceColors = [
-       
-        [1.0,  1.0,  1.0,  1.0],    // Front face: white
-        [1.0,  0.0,  0.0,  1.0],    // Back face: red
-        [0.0,  1.0,  0.0,  1.0],    // Top face: green
-        [0.0,  0.0,  1.0,  1.0],    // Bottom face: blue
-        [1.0,  1.0,  0.0,  1.0],    // Right face: yellow
-        [1.0,  0.0,  1.0,  1.0],    // Left face: purple
-      ];
+    var faceColors =
+[
+	vec4(1.0, 0.0, 0.0, 1.0), //Red
+	vec4(0.0, 1.0, 0.0, 1.0), //Green
+	vec4(0.0, 0.0, 1.0, 1.0), //Blue
+	vec4(1.0, 1.0, 0.0, 1.0), //Yellow
+	vec4(0.0, 1.0, 1.0, 1.0), //Cyan
+	vec4(1.0, 0.0, 1.0, 1.0), //Magenta
+];
     
       // Convert the array of colors into a table for all the vertices.
+      var colors ={
+      values : new Float32Array([
+        -1.0,  1.0,  1.0,   //vertex 0 | Front-Top-Left
+         1.0,  1.0,  1.0,   //vertex 1 | Front-Top-Right
+        -1.0, -1.0,  1.0,   //vertex 2 | Front-Bottom-Left
+         1.0, -1.0,  1.0,   //vertex 3 | Front-Bottom-Right
+        -1.0,  1.0, -1.0,   //vertex 4 | Back-Top-Left
+         1.0,  1.0, -1.0,   //vertex 5 | Back-Top-Right
+        -1.0, -1.0, -1.0,   //vertex 6 | Back-Bottom-Left
+         1.0, -1.0, -1.0    //vertex 7 | Back-Bottom-Right
+         ])
+        };
+
+   //   var colors2 = [];
     
-      var colors = [];
-    
-      for (var j = 0; j < faceColors.length; ++j) {
-        const c = faceColors[j];
+     // for (var j = 0; j < faceColors.length; ++j) {
+     //   const c = faceColors.values[j];
     
         // Repeat each color four times for the four vertices of the face
-        colors = colors.concat(c, c, c, c);
-      }
+     //   colors2 = colors.concat(c, c, c, c);
+     // }
     
       this.colorBuffer.buffer = gl.createBuffer();
       gl.bindBuffer(gl.ARRAY_BUFFER, this.colorBuffer.buffer);
-      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
+      gl.bufferData(gl.ARRAY_BUFFER, colors.values , gl.STATIC_DRAW);
 
       this.colorBuffer.attributeLoc = gl.getAttribLocation( this.program, "aColor" );
       gl.enableVertexAttribArray( this.colorBuffer.attributeLoc);
