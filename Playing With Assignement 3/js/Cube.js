@@ -47,14 +47,21 @@ function Cube( gl, vertexShaderId, fragmentShaderId ) {
         1.0, -1.0, -1.0    //vertex 7 | Back-Bottom-Right
         ])
     };
+
+
+
+
+
+
+
+
     
     //Triangle Strip Draw Order Array
     //Order of Vector elements based on Figure 2: Triangulating a cube for one sequential strip.
     // URL: http://www.cs.umd.edu/gvil/papers/av_ts.pdf 
     var tSDOA = {
        values: new Uint16Array([
-             // 0, 1, 2, 3, 7, 1, 5, 0, 4, 2, 6, 7, 4, 5
-             5,4,7,6,2,4,0,5,1,7,3,2,1,0
+              0, 1, 2, 3, 7, 1, 5, 0, 4, 2, 6, 7, 4, 5
     ])
     };
 
@@ -77,7 +84,7 @@ function Cube( gl, vertexShaderId, fragmentShaderId ) {
       // Convert the array of colors into a table for all the vertices.
       var colors ={
       values : new Float32Array([
-        -1.0,  1.0,  1.0,    //vertex 0 | Front-Top-Left
+        -1.0,  1.0,  1.0,   //vertex 0 | Front-Top-Left
          1.0,  1.0,  1.0,   //vertex 1 | Front-Top-Right
         -1.0, -1.0,  1.0,   //vertex 2 | Front-Bottom-Left
          1.0, -1.0,  1.0,   //vertex 3 | Front-Bottom-Right
@@ -88,14 +95,14 @@ function Cube( gl, vertexShaderId, fragmentShaderId ) {
          ])
         };
 
-      var colors2 = [];
+   //   var colors2 = [];
     
-     for (var j = 0; j < faceColors.length; ++j) {
-       const c = faceColors.values[j];
+     // for (var j = 0; j < faceColors.length; ++j) {
+     //   const c = faceColors.values[j];
     
-      //   Repeat each color four times for the four vertices of the face
-       colors2 = colors2.concat(c, c, c, c);
-      }
+        // Repeat each color four times for the four vertices of the face
+     //   colors2 = colors.concat(c, c, c, c);
+     // }
     
       this.colorBuffer.buffer = gl.createBuffer();
       gl.bindBuffer(gl.ARRAY_BUFFER, this.colorBuffer.buffer);
