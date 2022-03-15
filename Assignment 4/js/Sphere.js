@@ -27,6 +27,11 @@
 function Sphere( slices, stacks, vertexShader, fragmentShader ) { 
     let i, j;  // loop counters
 
+    let radius; 
+    let distance; 
+    
+
+
     let program = initShaders(gl,
         vertexShader || "Sphere-vertex-shader",
         fragmentShader || "Sphere-fragment-shader");
