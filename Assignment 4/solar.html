@@ -5,7 +5,7 @@
 <script src="js/Sphere.js"></script>
 <script src="js/main.js"></script>
 
-<script id="Sphere-vertex-shader" type="x-shader/x-vertex">
+<script id="Sphere-vertex-shader" type="x-shader/x-vertex">#version 300 es
     in  vec4 aPosition;
     
     uniform mat4 P;
@@ -27,4 +27,4 @@
         fColor = color;
     }
 </script>
-<canvas id="webgl-canvas" width="800" height="800"></canvas>
+<canvas id="webgl-canvas" width="800" height="800"></canvas>#version 300 es
