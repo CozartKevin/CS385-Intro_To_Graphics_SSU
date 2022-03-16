@@ -6,8 +6,12 @@ function init() {
     var canvas = document.getElementById("webgl-canvas");
     gl = canvas.getContext("webgl2");
 
+    gl.viewport (0, 0, gl.canvas.clientWidth, gl.canvas.clientHeight);
+
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.enable(gl.DEPTH_TEST);
+    gl.enable(gl.CULL_FACE);
+    
     
    //Sun Size: 1.09
    //Earth Size: 0.01
@@ -18,32 +22,37 @@ function init() {
    var sun = new Sphere();
    var earth = new Sphere();
    var moon = new Sphere();
-    //Sun Settings
-    sun.radius = 1.09;
-    sun.color = (0.970, 0.621, 0.165, 1);
-    //Earth Settings
-    earth.radius = 0.01;
-    earth.distance = 1.5;
-    earth.color = (0.247, 0.657, 0.950, 1)
-    //Moon Settings
-    moon.radius = 0.0027;
-    moon.distance = 0.0175;
-    moon.color = (0.860, 0.845, 0.826, 1)
 
-   
-    gl.viewport (0, 0, canvas.clientWidth, canvas.clientHeight);
+
+    //Sun Settings
+    sun.radius = 109;
+    sun.color = [0.970, 0.621, 0.165, 1];
+    //Earth Settings
+    earth.radius = 1;
+    earth.distance = 1000;
+    earth.color = [0.247, 0.657, 0.950, 1];
+    //Moon Settings
+    moon.radius = 0.27;
+    moon.distance = 15;
+    moon.color = [0.860, 0.845, 0.826, 1];
+
+  
+    
    
 
     // Add your sphere creation and configuration code here
     render = function(){
-        var year = 0; 
+        var year = 100; 
         var day = 0;
-        var axis = [1,0,0]; 
+        var axis = [1,1,0]; 
     
+        var radius = 200;
+
+
         var D = 2 * (earth.distance + moon.distance + moon.radius); 
         var fovy, aspect, zNear, zFar; 
         var sin = (D/2) / (zNear + (D/2));
-        fovy = 2 * (Math.asin(sin));
+        fovy = (2 * (Math.asin()));
         aspect = canvas.clientWidth/canvas.clientHeight;
         zNear = 1;
         zFar = zNear + D;
@@ -52,7 +61,7 @@ function init() {
         var S = scalem(sun.radius); 
         var t = 0.0;
 
-        ms = new MatrixStack();
+      
     
 
         sun.P = P;
@@ -108,11 +117,11 @@ function init() {
     
         gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
         
-       
+        ms = new MatrixStack();
         var V = translate(0.0, 0.0, -0.5*(zNear + zFar));
         
         ms.scale(sun.radius, sun.radius, sun.radius);
-
+        
 
         sun.render();
         ms.pop();
