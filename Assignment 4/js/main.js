@@ -43,10 +43,6 @@ function init() {
 
     // Add your sphere creation and configuration code here
     render = function(){
-             
-        var radius = 200;
-
-
         var D = 2 * (earth.distance + moon.distance + moon.radius); 
         var zNear = 100;
         var zFar = zNear + D;
@@ -55,20 +51,18 @@ function init() {
         fovy = (2 * ((Math.asin(sin) * (180/Math.PI))));
         aspect = canvas.clientWidth/canvas.clientHeight;
         
-       
         var V = translate(0, 0, -0.5*(zNear + zFar)); 
         var P = perspective(fovy, aspect, zNear, zFar);
         var S = scalem(sun.radius); 
         
-
         sun.P = P;
         earth.P = P;
         moon.P = P;
 
+
+        // Update your motion variables here
         const HoursPerDay = 24; 
         const DaysPerYear = 365.25 /* days */ * HoursPerDay; 
-      // Render the Earth next 
-        
         var year = t / DaysPerYear * 360; // in degrees 
         var day = t % HoursPerDay; 
       
@@ -76,10 +70,10 @@ function init() {
       
 
     
-        // Update your motion variables here
+        
     
         gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
-        
+        // Add your rendering sequence here
         ms = new MatrixStack();
         var V = translate(0.0, 0.0, -0.5*(zNear + zFar));
         ms.load(V);
@@ -89,7 +83,7 @@ function init() {
         sun.render();
         ms.pop();
         ms.push();
-        ms.rotate(year, axis);
+        ms.rotate(year, axis]);
         ms.translate(earth.distance, 0, 0);
         ms.push();
         ms.rotate(day, axis);
@@ -104,7 +98,7 @@ function init() {
         ms.pop();
     
     
-        // Add your rendering sequence here
+        
     };
     requestAnimationFrame(render);
 }
