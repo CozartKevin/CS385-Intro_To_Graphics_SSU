@@ -4,6 +4,7 @@ var render;
 var t = 0.0;
 var axis = [0,1,0];
 var year = 0;
+
 function init() {
     var canvas = document.getElementById("webgl-canvas");
     gl = canvas.getContext("webgl2");
