@@ -7,12 +7,17 @@
 
 <script id="Sphere-vertex-shader" type="x-shader/x-vertex">
     in  vec4 aPosition;
+    in  vec2 a_texcoord;
     
+
     uniform mat4 P;
     uniform mat4 MV;
+    
+
 
     void main()
     {
+        
         gl_PointSize = 3.0;
         gl_Position = P * MV * aPosition;
     }

@@ -97,7 +97,7 @@ function init() {
         earth.MV = ms.current();
         earth.render();
         ms.pop();
-        ms.rotate((2 * day), axis);
+       ms.rotate((2 * day), axis);
         ms.translate(moon.distance, 0, 0);
         ms.scale(moon.radius);
         moon.MV = ms.current();
