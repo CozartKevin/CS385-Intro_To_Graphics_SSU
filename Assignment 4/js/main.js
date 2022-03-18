@@ -1,7 +1,9 @@
 
 var gl;
 var render;
-
+var t = 0.0;
+var axis = [0,1,0];
+var year = 0;
 function init() {
     var canvas = document.getElementById("webgl-canvas");
     gl = canvas.getContext("webgl2");
@@ -33,13 +35,13 @@ function init() {
     earth.color = [0.247, 0.657, 0.950, 1];
     //Moon Settings
     moon.radius = 0.05;
-    moon.distance = 0.5;
+    moon.distance = 0.35;
     moon.color = [0.860, 0.845, 0.826, 1];
 
-    var t = 0.0;
-    
-        var axis = [1,0,0]; 
 
+    
+         
+  
 
     // Add your sphere creation and configuration code here
     render = function(){
@@ -63,12 +65,16 @@ function init() {
         // Update your motion variables here
         const HoursPerDay = 24; 
         const DaysPerYear = 365.25 /* days */ * HoursPerDay; 
-        var year = t / DaysPerYear * 360; // in degrees 
-        var day = t % HoursPerDay; 
+    
+        var day = t / DaysPerYear * 360; // in degrees 
+        var hour = t % HoursPerDay; 
       
-          t = t + 1;
-      
-
+          t = t + 5;
+      if(day === 366){
+        day = 0;
+        year++;
+      }
+       
     
         
     
@@ -83,14 +89,15 @@ function init() {
         sun.render();
         ms.pop();
         ms.push();
-        ms.rotate(year, axis]);
+        ms.rotate(day, axis);
         ms.translate(earth.distance, 0, 0);
         ms.push();
-        ms.rotate(day, axis);
+        ms.rotate(hour, axis);
         ms.scale(earth.radius);
         earth.MV = ms.current();
         earth.render();
         ms.pop();
+        ms.rotate((2 * day), axis);
         ms.translate(moon.distance, 0, 0);
         ms.scale(moon.radius);
         moon.MV = ms.current();
@@ -98,9 +105,10 @@ function init() {
         ms.pop();
     
     
-        
+        requestAnimationFrame(render);
     };
     requestAnimationFrame(render);
+    
 }
 
 
