@@ -33,8 +33,8 @@ function Sphere( slices, stacks, vertexShader, fragmentShader ) {
 
 
     let program = initShaders(gl,
-        vertexShader || "Sphere-vertex-shader",
-        fragmentShader || "Sphere-fragment-shader");
+        vertexShader || "vertex-shader",
+        fragmentShader || "fragment-shader");
 
     let nSlices = slices || 20; // Default number of slices
     let nStacks = stacks || 12; // Default number of stacks
