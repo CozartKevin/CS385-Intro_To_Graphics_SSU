@@ -1,0 +1,5 @@
+bird flys in from left of screen - Trail drags behind it
+does loop somewhere near midway point - trail continues to follow
+bird drops small object from claws (seed) - camera follows the seed until the trail from behind bird disapears( above screen)
+seed slips into the ground - sprouts - tree starts to grow - line from original bird becomes horizon as the tree grows
+bird loops behind tree from left to right - bird loops right to left in front of tree - perches on tree then grabs berry
