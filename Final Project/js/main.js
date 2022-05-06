@@ -8,10 +8,11 @@ import { PointerLockControls } from './PointerLockControls.js'; //imports Pointe
 
 //Scene setup
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0xff00e4 );
-scene.fog = new THREE.Fog( 0xffffff, 0, 750 );
+//scene.background = new THREE.Color(0xff00e4 );
+//scene.fog = new THREE.Fog( 0xffffff, 0, 750 );
 let autoRotate = true;
-const renderer = new THREE.WebGLRenderer( {anteialias: true});
+
+const renderer = new THREE.WebGLRenderer( { alpha: true, anteialias: true});
   let mainCamera, controls, skyboxGeo, skybox;
   
   const objects = [];
@@ -34,7 +35,7 @@ const renderer = new THREE.WebGLRenderer( {anteialias: true});
   function init(){
 
    //Main Camera setup  Generate and set default position
-   mainCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+   mainCamera = new THREE.PerspectiveCamera(120, window.innerWidth / window.innerHeight, 0.1, 30000);
    //mainCamera.position.y = 10;
    mainCamera.position.z = 5;
      
@@ -42,10 +43,10 @@ const renderer = new THREE.WebGLRenderer( {anteialias: true});
      
 
     //Setup Textured Skybox  Using this tutorial: https://codinhood.com/post/create-skybox-with-threejs
-    //const materialArray = createMaterialArray(skyboxImage);
-    //skyboxGeo = new THREE.BoxGeometry(10000, 10000, 10000);
-    //skybox = new THREE.Mesh(skyboxGeo, materialArray);
-    //scene.add(skybox);
+    const materialArray = createMaterialArray(skyboxImage);
+    skyboxGeo = new THREE.BoxGeometry(10000, 10000, 10000);
+    skybox = new THREE.Mesh(skyboxGeo, materialArray);
+    scene.add(skybox);
   
       //Setup Renderer Size and link a canvas to the body tags in final.html
         renderer.setSize(window.innerWidth, window.innerHeight);
@@ -63,10 +64,15 @@ const renderer = new THREE.WebGLRenderer( {anteialias: true});
 
     //Plane Setup:  This is intended to be the floor of my walkable play area.
     const planeGeometry = new THREE.PlaneGeometry( 1, 1 );
-    const planeMaterial = new THREE.MeshBasicMaterial( {color: 0xffffff, side: THREE.DoubleSide} );
+    const planeMaterial = new THREE.MeshBasicMaterial( {color: 0xff00f, side: THREE.DoubleSide} );
     const plane = new THREE.Mesh( planeGeometry, planeMaterial );
     //plane.position.set(10,10,0); 
-    //scene.add(plane);
+    plane.position.z = -10;
+    plane.position.y = -10;
+    plane.scale.x = 100;
+    plane.scale.y = 10;
+    plane.scale.z = 100;
+    scene.add(plane);
 
       const light = new THREE.HemisphereLight( 0xeeeeff, 0x777788, 0.75);
       light.position.set(0.5,1,0.75);
@@ -150,20 +156,21 @@ const renderer = new THREE.WebGLRenderer( {anteialias: true});
     console.log(planeGeometry);
     console.log(planeMaterial);
     console.log(plane);
-      renderer.render(scene,mainCamera);
-    // window.requestAnimationFrame(animate);
+    console.log(skybox);
+     // renderer.render(scene,mainCamera);
+     window.requestAnimationFrame(animate);
   }
 
   function animate(){
 
     //skybox stuff NOT WORKING...
-    /*skybox.rotation.x += 0.005;
-    skybox.rotation.y += 0.005;
+    skybox.rotation.x += 0.00015;
+    skybox.rotation.y += 0.00015;
     renderer.render(scene, mainCamera);
     window.requestAnimationFrame(animate);
-*/
 
-    //window.requestAnimationFrame(animate);
+
+   // window.requestAnimationFrame(animate);
     renderer.render(scene,mainCamera);
   
 }
@@ -177,7 +184,7 @@ const renderer = new THREE.WebGLRenderer( {anteialias: true});
   }
 
 
- /* function createPathStrings(filename) {
+  function createPathStrings(filename) {
     const basePath = "./js/skybox/";
     const baseFilename = basePath + filename;
     const fileType = ".png";
@@ -197,5 +204,4 @@ function createMaterialArray(filename) {
     });
     return materialArray;
   }
-
-  */
+  
