@@ -19,7 +19,7 @@ var USE_WIREFRAME = false;
  
 
     let mainCamera, controls, skyboxGeo, skybox, ambientLight, hemispherLight, light;
-    var cube, walkablePlane, walkableSphere; 
+    var cube, walkablePlane, walkableSphere, cylinder, cone, circle; 
     
     var keyboard = {};
     var player = { height:1.8, speed:0.02, moveSpeed: 0.02, turnSpeed:Math.PI*0.02 };
@@ -109,6 +109,46 @@ var USE_WIREFRAME = false;
         cube.position.y += 1;
         scene.add(cube);  //reference cube
 
+        cylinder = new THREE.Mesh(
+          new THREE.CylinderGeometry( 5, 5, 20, 32),
+          new THREE.MeshPhongMaterial({color:0x0ff3f, wireframe:USE_WIREFRAME})
+        )
+        cylinder.receiveShadow = true;
+        cylinder.castShadow = true;
+        cylinder.position.x -= 25;
+        cylinder.position.y += 15;
+        scene.add(cylinder)
+        
+        
+        
+        cone = new THREE.Mesh(
+          new THREE.ConeGeometry(5,20,32),
+          new THREE.MeshPhongMaterial({color: 0xff00e4, wireframe: USE_WIREFRAME})
+        )
+
+        cone.recieveShadow = true;
+        cone.castShadow = true;
+        cone.position.x += 5;
+        cone.position.y += 10;
+        cone.rotation.x = 360;
+        scene.add(cone);
+        
+        
+        
+        circle = new THREE.Mesh(
+          new THREE.CircleGeometry(2,15),
+          new THREE.MeshPhongMaterial({color: 0xE4FC46, wireframe: USE_WIREFRAME})
+
+        )
+        circle.recieveShadow = true;
+        circle.castShadow = true;
+        circle.rotation.x += 160;
+        circle.position.y += 5;
+      
+        scene.add(circle);
+
+
+
       //Plane Setup:  This is intended to be the floor of my walkable play area.
     // const planeGeometry = new THREE.PlaneGeometry( 1, 1 );
     // const planeMaterial = new THREE.MeshBasicMaterial( {color: 0xff00f, side: THREE.DoubleSide} );
@@ -133,6 +173,11 @@ var USE_WIREFRAME = false;
       walkableSphere.position.y -= 50;
       walkableSphere.recieveShadow = true;
       //scene.add(walkableSphere);
+
+      
+
+    
+
 
       //Attempt at walkable spherical world
     // const sphereGeometry = new THREE.SphereGeometry(150,320,150);
@@ -202,7 +247,10 @@ var USE_WIREFRAME = false;
     
       cube.rotation.x += 0.0025;
       cube.rotation.y += 0.005;
-
+      cylinder.rotation.x -= 0.004;
+      cylinder.rotation.y -= 0.0065;
+      cone.rotation.z += 0.002;
+      
       //skybox stuff IS NOW WORKING
       skybox.rotation.x += 0.00015;
       skybox.rotation.y += 0.00015;
